@@ -29,19 +29,19 @@ module.exports = function repeater(str, options) {
       if ("separator" in options === true) {
         result = arrayEnd.join(options.separator);
       } else {
-        result = arrayEnd.join('');
+        result = arrayEnd.join('+');
       }
     }
     return result;
   } else { // если нет дополнений
     if ("repeatTimes" in options === true) {
-      for (let i = 0; i < options.repeatTimes; i++) {
+      for (let i = 0; i < options.repeatTimes-1; i++) {
         array.push(str);
       }
       if ("separator" in options === true) { // если есть сепаратор
         result = array.join(options.separator);
       } else { // если нет сепаратора
-        result = array.join('');
+        result = array.join('+');
       }
     }
     return result;
