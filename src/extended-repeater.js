@@ -1,53 +1,47 @@
 const CustomError = require("../extensions/custom-error");
 
 module.exports = function repeater(str, options) {
-  (str === null) ? str = "null" : (typeof (str) !== 'string') ?  str = str.toString(): str = str;
-  let array = [str];
-  let arrayAddition = [];
-  let resultAddition;
-  let result;
-  let arrayEnd = [];
-
-  if ("addition" in options === true) { // если есть дополнения
-    if (typeof (options.addition) != 'string') {
+ 
+  if (typeof str != 'string') {
+    str = String(str);
+  }
+  if (options.hasOwnProperty('addition')) {
+    if (typeof(options.addition) !== 'string') {
       options.addition = String(options.addition);
     }
-    for (let i = 0; i < options.additionRepeatTimes; i++) {
-      arrayAddition.push(options.addition);
-    }
-    if ("additionSeparator" in options === true) { // если есть дополнения и разделитель между дополнениями
-        resultAddition = arrayAddition.join(options.additionSeparator);
-        array.push(resultAddition);
-        result = array.join('');
-    } else { // если есть дополнения, но нет разделителя между дополнениями
-      resultAddition = arrayAddition.join('');
-      array.push(resultAddition);
-      result = array.join('');
-    }
-    if ("repeatTimes" in options === true) {
-      for (let i = 0; i < options.repeatTimes; i++) {
-        arrayEnd.push(result);
-      }
-      if ("separator" in options === true) {
-          result = arrayEnd.join(options.separator);
-      } else {
-        result = arrayEnd.join('+');
-      }
-    }
-    return result;
-  } else { // если нет дополнений
-    if ("repeatTimes" in options === true) {
-      for (let i = 0; i < options.repeatTimes - 1; i++) {
-        array.push(str);
-      }
-      if ("separator" in options === true) { // если есть сепаратор
-        result = array.join(options.separator);
-      } else { // если нет сепаратора
-        result = array.join('+');
-      }
-    }
-    return result;
   }
+  if (!options.addition) {
+    options.addition = '';
+  }
+  if (!options.separator) {
+    options.separator = '+';
+  }
+  if (!options.additionSeparator) {
+    options.additionSeparator = '|';
+  }
+  if (!options.repeatTimes || typeof(options.repeatTimes) !== 'number') {
+    options.repeatTimes = 1;
+  }
+  if (!options.additionRepeatTimes || typeof(options.repeatTimes) !== 'number') {
+    options.additionRepeatTimes = 1;
+  }
+
+  let array = [str];
+  let arrayAddition = []; 
+  let arrayEnd = [];
+  let result;
+ 
+  for (let i = 0; i < options.additionRepeatTimes; i++) {
+    arrayAddition.push(options.addition);
+  }
+  result = arrayAddition.join(options.additionSeparator);
+  array.push(result);
+  result = array.join('');
+  for (let j = 0; j < options.repeatTimes; j++) {
+    arrayEnd.push(result);
+  }
+  result = arrayEnd.join(options.separator);
+  return result;
 }
 
 //npm run test ./test/extended-repeater.test.js
