@@ -1,7 +1,7 @@
 const CustomError = require("../extensions/custom-error");
 
 module.exports = function repeater(str, options) {
-  (typeof(str) !== 'string') ? str = str.toString() : str = str;
+  (str === null) ? str = "null" : (typeof (str) !== 'string') ?  str = str.toString(): str = str;
   let array = [str];
   let arrayAddition = [];
   let resultAddition;
@@ -9,14 +9,16 @@ module.exports = function repeater(str, options) {
   let arrayEnd = [];
 
   if ("addition" in options === true) { // если есть дополнения
-    (typeof(options.addition) !== 'string') ? options.addition = 'DEFAULTSTRING' : options.addition;
+    if (typeof (options.addition) != 'string') {
+      options.addition = String(options.addition);
+    }
     for (let i = 0; i < options.additionRepeatTimes; i++) {
       arrayAddition.push(options.addition);
     }
     if ("additionSeparator" in options === true) { // если есть дополнения и разделитель между дополнениями
-      resultAddition = arrayAddition.join(options.additionSeparator);
-      array.push(resultAddition);
-      result = array.join('');
+        resultAddition = arrayAddition.join(options.additionSeparator);
+        array.push(resultAddition);
+        result = array.join('');
     } else { // если есть дополнения, но нет разделителя между дополнениями
       resultAddition = arrayAddition.join('');
       array.push(resultAddition);
@@ -27,7 +29,7 @@ module.exports = function repeater(str, options) {
         arrayEnd.push(result);
       }
       if ("separator" in options === true) {
-        result = arrayEnd.join(options.separator);
+          result = arrayEnd.join(options.separator);
       } else {
         result = arrayEnd.join('+');
       }
@@ -35,7 +37,7 @@ module.exports = function repeater(str, options) {
     return result;
   } else { // если нет дополнений
     if ("repeatTimes" in options === true) {
-      for (let i = 0; i < options.repeatTimes-1; i++) {
+      for (let i = 0; i < options.repeatTimes - 1; i++) {
         array.push(str);
       }
       if ("separator" in options === true) { // если есть сепаратор
@@ -47,3 +49,5 @@ module.exports = function repeater(str, options) {
     return result;
   }
 }
+
+//npm run test ./test/extended-repeater.test.js
