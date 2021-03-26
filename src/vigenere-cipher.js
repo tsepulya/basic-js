@@ -1,7 +1,7 @@
 const CustomError = require("../extensions/custom-error");
 
 class VigenereCipheringMachine {
-  constructor (name) {
+  constructor (name = true) {
     this.name = name;
   }
   
@@ -29,7 +29,10 @@ class VigenereCipheringMachine {
         array.push(alph[resIndex]);
       }
     }
+    if (this.name) {
       return array.join('');
+    }
+    return array.reverse().join('');
     }
    
   decrypt(encryptedMessage, key) {
@@ -56,7 +59,10 @@ class VigenereCipheringMachine {
         array.push(alph[resIndex]);
       }
     }
+    if (this.name) {
       return array.join('');
+    }
+    return array.reverse().join('');
     }
   }
 
